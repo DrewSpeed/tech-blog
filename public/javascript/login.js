@@ -1,4 +1,4 @@
-const loginFormHandler = async function(event) {
+async function loginFormHandler(event) {
     event.preventDefault();
 
     const usernameEl = document.querySelector('#username-input-login');
@@ -9,10 +9,10 @@ const loginFormHandler = async function(event) {
             username: usernameEl.value,
             password: passwordEl.value
         }),
-        heaaders: { "Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json"}
     })
     .then(function() {
-        document.locaation.replace('/dashboard');
+        document.location.replace('/dashboard');
     })
     .catch(err => console.log(err));
 };

@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const { User } = require('../../models');
+const bcrypt = require('bcrypt');
+
+
 
 router.post('/', (req, res) => {
     User.create({
@@ -11,7 +14,6 @@ router.post('/', (req, res) => {
             req.session.userId = dbUserData.id;
             req.session.username = dbUserData.username;
             req.session.loggedIn = true;
-
             res.json(dbUserData);
         });
     })
@@ -40,21 +42,24 @@ router.post('/login', (req, res) => {
         }
         req.session.save(() => {
             req.session.userId = dbUserData.id;
-            req.session.username = dbUseerData.username;
+            req.session.username = dbUserData.username;
             req.session.loggedIn = true;
-
-            res.json({ user: dbUserData, message: 'You aare now logged in.'});
+            res.json({ user: dbUserData, message: 'You are now logged in.'});
         });
     });
 });
 
 router.post('/logout', (req, res) => {
-    if (!req.session.loggedIn) {
+    if (req.session.loggedIn) {
+
+        req.session.destroy(() => {
+            res.status(204).end();
+            console.log('logged out!')
+        });
+        } else {
             res.status(404).end();
+            console.log('not logged out!')
     }
-    req.session.destroy(() => {
-        res.status(202).end();
-    })
 });
 
 router.delete('/:id', (req, res) => {
