@@ -28,11 +28,14 @@ router.get('/post/:id', (req, res) => {
         ],
     })
     .then((dbPostData) => {
-        if (!dbPostData) {
-            res.status(404).end();
+        if (dbPostData) {
+
+            const post = dbPostData.get({ plain: true });
+            res.render('single-post', { post });
+
+        } else {
+        res.status(404).end();
         }
-        const post = dbPostData.get({ plain: true });
-        res.render('single-post', { post });
     })
     .catch((err) => {
         res.status(500).json(err);

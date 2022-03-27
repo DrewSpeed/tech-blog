@@ -13,10 +13,10 @@ const sess = {
     secret: 'Super secret secret',
     cookie: {},
     resave: false,
-    ssaveUninitialized: true,
-    store: new SequelieStore({
-        db: sequelize
-    })
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize,
+    }),
 };
 
 app.use(session(sess));
@@ -24,8 +24,10 @@ app.use(session(sess));
 const hbs = exphbs.create({
     helpers: {
         format_date: date => {
-            return `$(date.getMonth) + 1}/${date.getFullYear()}`;
-        }
+            return `${new Date(date).getMonth() + 1}/${new Date(date).getDate()}/${new Date(
+              date
+            ).getFullYear()}`;
+          }
     }
 });
 
@@ -33,7 +35,7 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./controllers/'));

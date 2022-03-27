@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const { response } = require('express');
-const { json } = require('express/lib/response');
 const { User } = require('../../models');
 
 router.post('/', (req, res) => {
@@ -14,7 +12,7 @@ router.post('/', (req, res) => {
             req.session.username = dbUserData.username;
             req.session.loggedIn = true;
 
-            res.json(dbUserDaataa);
+            res.json(dbUserData);
         });
     })
     .catch(err => {
